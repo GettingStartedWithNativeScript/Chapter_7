@@ -9,10 +9,10 @@ describe("Appium", function () {
 
         var testFramework = {
             browserName: '',
-            'appium-version': '1.3',
+            'appium-version': '1.5',
             platformName: 'Android', // 'iOS'
             platformVersion: '4.4',  // '8.1'
-            deviceName: '',  // 'iPhone Simulator'
+            deviceName: 'Android Emulator',  // 'iPhone Simulator'
             app: __dirname + '/../platforms/android/build/outputs/apk/crossCommunicator-debug.apk'
             // __dirname + '/../platforms/ios/build/emulator/crossCommunicator.app'
         };
@@ -24,16 +24,19 @@ describe("Appium", function () {
 
     it("should type in an element", function (done) {
         driver
-            .elementByXPath('//android.widget.EditText[@text=\'Enter your name\']')
-            //.elementByXPath('//UITextField[@id=\'name\']')
-            .sendKeys('Testing')
-            .text()
-            .then(function (v) {
-                if ('Testing' !== v) {
-                    done(new Error("Value in name field does not match"));
-                } else {
-                    done();
-                }
-            }, done);
+            .elementByAccessibilityId('name')
+            .setText('Testing')
+            .then(function () {
+                driver
+                    .elementByAccessibilityId('name')
+                    .text()
+                    .then(function (v) {
+                        if ('Testing' !== v) {
+                            done(new Error("Value in name field does not match"));
+                        } else {
+                            done();
+                        }
+                    }, done);
+            });
     });
 });
